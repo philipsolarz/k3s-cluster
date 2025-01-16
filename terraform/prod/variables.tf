@@ -9,6 +9,11 @@ variable "admin_public_ssh_key" {
   type        = string
 }
 
+variable "ansible_public_ssh_key" {
+  description = "Ansible public SSH Key"
+  type        = string
+}
+
 variable "server_count" {
   description = "Number of servers in the cluster"
   type        = number
@@ -19,10 +24,4 @@ variable "agent_count" {
   description = "Number of agents in the cluster"
   type        = number
   default     = 1
-}
-
-variable "k3s_token" {
-  description = "K3S Token"
-  type        = string
-  sensitive   = true
 }
