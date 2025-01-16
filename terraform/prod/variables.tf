@@ -25,3 +25,9 @@ variable "agent_count" {
   type        = number
   default     = 1
 }
+
+variable "k3s_token" {
+  description = "K3s Token"
+  type        = string
+  default     = "changeme"
+}
