@@ -9,6 +9,11 @@ variable "admin_public_ssh_key" {
   type        = string
 }
 
+variable "admin_private_key_path" {
+  description = "Admin private SSH Key Path"
+  type        = string
+}
+
 variable "ansible_public_ssh_key" {
   description = "Ansible public SSH Key"
   type        = string

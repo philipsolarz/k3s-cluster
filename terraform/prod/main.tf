@@ -31,3 +31,29 @@ module "agents" {
   depends_on = [module.servers]
 }
 
+resource "null_resource" "fetch_kubeconfig" {
+  connection {
+    host        = module.servers.public_ips[0]
+    user        = "admin"
+    private_key = file(var.admin_private_key_path)
+  }
+
+  provisioner "local-exec" {
+    command = "scp -i ${var.admin_private_key_path} admin@${module.servers.public_ips[0]}:/etc/rancher/k3s/k3s.yaml ~/.kube/k3s.yaml"
+  }
+
+  depends_on = [module.agents]
+}
+
+resource "null_resource" "adjust_kubeconfig" {
+  provisioner "local-exec" {
+    command = "sed -i 's/127.0.0.1/${module.servers.public_ips[0]}/' ~/.kube/k3s.yaml"
+  }
+
+  depends_on = [null_resource.fetch_kubeconfig]
+}
+
+module "k8s" {
+  source     = "../modules/k8s"
+  depends_on = [null_resource.adjust_kubeconfig]
+}

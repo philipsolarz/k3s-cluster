@@ -7,7 +7,6 @@ users:
       - ${admin_public_ssh_key}
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
-
   - name: ansible
     ssh-authorized-keys:
       - ${ansible_public_ssh_key}
