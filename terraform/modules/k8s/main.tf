@@ -20,11 +20,14 @@ resource "helm_release" "argocd" {
   create_namespace = true
 }
 
-resource "kubernetes_manifest" "app_of_apps" {
-  provider = kubernetes.default
-  manifest = file("${path.module}/../k8s/app-of-apps.yaml")
+resource "helm_release" "app_of_apps" {
+  name  = "app-of-apps"
+  chart = "${path.module}/../../../k8s/"
+
+  depends_on = [helm_release.argocd]
 }
 
+# 1
 # resource "helm_release" "nginx_ingress" {
 #   name             = "nginx-ingress"
 #   repository       = "https://kubernetes.github.io/ingress-nginx"

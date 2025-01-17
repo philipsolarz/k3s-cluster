@@ -39,7 +39,7 @@ resource "null_resource" "fetch_kubeconfig" {
   }
 
   provisioner "local-exec" {
-    command = "scp -i ${var.admin_private_key_path} admin@${module.servers.public_ips[0]}:/etc/rancher/k3s/k3s.yaml ~/.kube/k3s.yaml"
+    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${var.admin_private_key_path} admin@${module.servers.public_ips[0]}:/etc/rancher/k3s/k3s.yaml ~/.kube/k3s.yaml"
   }
 
   depends_on = [module.agents]
