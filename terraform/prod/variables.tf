@@ -9,6 +9,16 @@ variable "admin_public_ssh_key" {
   type        = string
 }
 
+variable "admin_private_key_path" {
+  description = "Admin private SSH Key Path"
+  type        = string
+}
+
+variable "ansible_public_ssh_key" {
+  description = "Ansible public SSH Key"
+  type        = string
+}
+
 variable "server_count" {
   description = "Number of servers in the cluster"
   type        = number
@@ -22,7 +32,7 @@ variable "agent_count" {
 }
 
 variable "k3s_token" {
-  description = "K3S Token"
+  description = "K3s Token"
   type        = string
-  sensitive   = true
+  default     = "changeme"
 }

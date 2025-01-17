@@ -1,0 +1,18 @@
+#cloud-config
+packages:
+  - curl
+users:
+  - name: admin
+    ssh-authorized-keys:
+      - ${admin_public_ssh_key}
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+  - name: ansible
+    ssh-authorized-keys:
+      - ${ansible_public_ssh_key}
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+runcmd:
+  - apt-get update -y
+  - until curl -k https://${k3s_primary_server_ip}:6443; do sleep 5; done
+  - curl -sfL https://get.k3s.io | K3S_URL=https://${k3s_primary_server_ip}:6443 K3S_TOKEN="${k3s_token}" sh -

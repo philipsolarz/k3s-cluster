@@ -1,0 +1,40 @@
+---
+- name: Setup k3s agents
+  hosts: agents
+  become: true
+  vars_files:
+    - secrets.yaml
+  tasks:
+
+    - name: Get private_ip of the first server in the inventory
+      set_fact:
+        k3s_url: "https://{{ hostvars[groups['servers'][0]].private_ip }}:6443"
+
+    - name: Ensure dependencies are installed
+      apt:
+        name:
+          - curl
+        state: present
+
+    - name: Download and install k3s agent
+      shell: |
+        curl -sfL https://get.k3s.io | sh -
+      args:
+        executable: /bin/bash
+      environment:
+        K3S_URL: "{{ k3s_url }}"
+        K3S_TOKEN: "{{ k3s_token }}"
+
+    - name: Verify k3s installation
+      command: k3s --version
+      register: k3s_version
+
+    - name: Display k3s version
+      debug:
+        msg: "Installed k3s version: {{ k3s_version.stdout }}"
+
+    - name: Ensure k3s service is enabled and running
+      systemd:
+        name: k3s
+        enabled: yes
+        state: started

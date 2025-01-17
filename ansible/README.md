@@ -1,0 +1,1 @@
+ansible-playbook setup_servers.yaml -i inventory.py --check --diff --step --ask-vault-pass --ssh-extra-args="-o StrictHostKeyChecking=no"

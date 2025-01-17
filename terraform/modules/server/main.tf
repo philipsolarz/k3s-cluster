@@ -21,7 +21,7 @@ resource "hcloud_server" "k3s-servers" {
 
   network {
     network_id = var.network_id
-    ip         = "10.0.1.${count.index + 1}"
+    # ip         = "10.0.1.${count.index + 1}"
   }
 
   user_data = var.user_data_file
