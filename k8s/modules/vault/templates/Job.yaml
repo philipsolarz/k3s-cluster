@@ -6,11 +6,12 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   template:
     spec:
       serviceAccountName: vault-auth
+      restartPolicy: OnFailure
       containers:
         - name: init-vault
           image: solarzphilip/vault-kubectl-utility:0.1.2
