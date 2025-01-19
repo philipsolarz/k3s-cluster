@@ -34,10 +34,11 @@ spec:
             - |
               export INIT_FILE=/vault/file/init.json
               kubectl get secret vault-unseal-keys -n vault -o jsonpath='{.data.init\.json}' | base64 --decode > $INIT_FILE
-              vault operator unseal $(jq -r '.unseal_keys_b64[0]' $INIT_FILE)
-              vault operator unseal $(jq -r '.unseal_keys_b64[1]' $INIT_FILE)
-              vault operator unseal $(jq -r '.unseal_keys_b64[2]' $INIT_FILE)
+              vault operator unseal "$(jq -r '.unseal_keys_b64[0]' $INIT_FILE)" 
+              vault operator unseal "$(jq -r '.unseal_keys_b64[1]' $INIT_FILE)" 
+              vault operator unseal "$(jq -r '.unseal_keys_b64[2]' $INIT_FILE)" 
               echo "Vault unsealed."
+              
         - name: configure-vault
           image: solarzphilip/vault-kubectl-utility:0.1.2
           env:
