@@ -33,7 +33,7 @@ spec:
   source:
     repoURL: https://github.com/philipsolarz/k3s-cluster.git
     targetRevision: main
-    path: k8s/modules/argo-cd
+    path: k8s/charts/argo-cd
     helm:
       valueFiles:
         - values.yaml
@@ -57,7 +57,7 @@ spec:
   source:
     repoURL: https://github.com/philipsolarz/k3s-cluster.git
     targetRevision: main
-    path: k8s/modules/argo-workflows
+    path: k8s/charts/argo-workflows
     helm:
       valueFiles:
         - values.yaml
@@ -83,7 +83,7 @@ spec:
   source:
     repoURL: https://github.com/philipsolarz/k3s-cluster.git
     targetRevision: main
-    path: k8s/modules/vault
+    path: k8s/charts/vault
     helm:
       valueFiles:
         - values.yaml
@@ -107,7 +107,7 @@ spec:
 #   source:
 #     repoURL: https://github.com/philipsolarz/k3s-cluster.git
 #     targetRevision: main
-#     path: k8s/modules/ingress-nginx
+#     path: k8s/charts/ingress-nginx
 #     helm:
 #       valueFiles:
 #         - values.yaml
@@ -131,7 +131,7 @@ spec:
 #   source:
 #     repoURL: https://github.com/philipsolarz/k3s-cluster.git
 #     targetRevision: main
-#     path: k8s/modules/metallb
+#     path: k8s/charts/metallb
 #     helm:
 #       valueFiles:
 #         - values.yaml
@@ -155,7 +155,7 @@ spec:
 #   source:
 #     repoURL: https://github.com/philipsolarz/k3s-cluster.git
 #     targetRevision: main
-#     path: k8s/modules/cert-manager
+#     path: k8s/charts/cert-manager
 #     helm:
 #       valueFiles:
 #         - values.yaml
