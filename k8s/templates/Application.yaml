@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: app-of-apps
-  namespace: argocd
+  namespace: argo-cd
 spec:
   project: default
   source:
@@ -26,20 +26,20 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
-  namespace: argocd
+  name: argo-cd
+  namespace: argo-cd
 spec:
   project: default
   source:
     repoURL: https://github.com/philipsolarz/k3s-cluster.git
     targetRevision: main
-    path: k8s/argocd
+    path: k8s/charts/argo-cd
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: argo-cd
   syncPolicy:
     automated:
       prune: true
@@ -50,20 +50,20 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress-nginx
-  namespace: argocd
+  name: argo-workflows
+  namespace: argo-workflows
 spec:
   project: default
   source:
     repoURL: https://github.com/philipsolarz/k3s-cluster.git
     targetRevision: main
-    path: k8s/ingress-nginx
+    path: k8s/charts/argo-workflows
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: ingress-nginx
+    namespace: argo-workflows
   syncPolicy:
     automated:
       prune: true
@@ -74,47 +74,97 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metallb
-  namespace: argocd
+  name: vault
+  namespace: argo-cd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
     repoURL: https://github.com/philipsolarz/k3s-cluster.git
     targetRevision: main
-    path: k8s/metallb
+    path: k8s/charts/vault
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: metallb-system
+    namespace: vault
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: cert-manager
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/philipsolarz/k3s-cluster.git
-    targetRevision: main
-    path: k8s/cert-manager
-    helm:
-      valueFiles:
-        - values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: cert-manager
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: ingress-nginx
+#   namespace: argo-cd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/philipsolarz/k3s-cluster.git
+#     targetRevision: main
+#     path: k8s/charts/ingress-nginx
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: ingress-nginx
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: metallb
+#   namespace: argo-cd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/philipsolarz/k3s-cluster.git
+#     targetRevision: main
+#     path: k8s/charts/metallb
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: metallb-system
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: cert-manager
+#   namespace: argo-cd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/philipsolarz/k3s-cluster.git
+#     targetRevision: main
+#     path: k8s/charts/cert-manager
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: cert-manager
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true

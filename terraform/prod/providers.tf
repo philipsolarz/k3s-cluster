@@ -11,3 +11,13 @@ provider "helm" {
     config_path = "~/.kube/k3s.yaml"
   }
 }
+
+# provider "vault" {
+#   address = "http://127.0.0.1:8200"
+
+#   auth_login {
+#     path   = "kubernetes/login"
+#     method = "kubernetes"
+#   }
+# }
+

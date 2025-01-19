@@ -54,6 +54,10 @@ resource "null_resource" "adjust_kubeconfig" {
 }
 
 module "k8s" {
-  source     = "../modules/k8s"
-  depends_on = [null_resource.adjust_kubeconfig]
+  source                  = "../modules/k8s"
+  depends_on              = [null_resource.adjust_kubeconfig]
+  kubernetes_api_endpoint = "https://${module.servers.public_ips[0]}:6443"
+  # providers = {
+  #   vault = vault
+  # }
 }

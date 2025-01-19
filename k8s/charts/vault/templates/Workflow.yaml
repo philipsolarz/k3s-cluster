@@ -1,0 +1,61 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Workflow
+# metadata:
+#   name: vault-setup
+#   namespace: vault
+# spec:
+#   entrypoint: main
+#   templates:
+#     - name: main
+#       steps:
+#         - - name: init-vault
+#             template: init
+
+#         - - name: unseal-vault
+#             template: unseal
+#             depends: init-vault
+
+#         - - name: configure-vault
+#             template: configure
+#             depends: unseal-vault
+
+#     - name: init
+#       container:
+#         image: solarzphilip/vault-kubectl-utility:0.1.0
+#         command: ["/bin/bash", "-c"]
+#         args:
+#           - |
+#             vault operator init -format=json > /vault/file/init.json
+#             kubectl create secret generic vault-unseal-keys --from-file=/vault/file/init.json -n vault
+#             echo "Vault initialized and keys stored."
+
+#     - name: unseal
+#       container:
+#         image: solarzphilip/vault-kubectl-utility:0.1.0
+#         command: ["/bin/bash", "-c"]
+#         args:
+#           - |
+#             export INIT_FILE=/vault/file/init.json
+#             kubectl get secret vault-unseal-keys -n vault -o jsonpath='{.data.init\.json}' | base64 --decode > $INIT_FILE
+#             vault operator unseal $(jq -r '.unseal_keys_b64[0]' $INIT_FILE)
+#             vault operator unseal $(jq -r '.unseal_keys_b64[1]' $INIT_FILE)
+#             vault operator unseal $(jq -r '.unseal_keys_b64[2]' $INIT_FILE)
+#             echo "Vault unsealed."
+
+#     - name: configure
+#       container:
+#         image: solarzphilip/vault-kubectl-utility:0.1.0
+#         command: ["/bin/bash", "-c"]
+#         args:
+#           - |
+#             export INIT_FILE=/vault/file/init.json
+#             kubectl get secret vault-unseal-keys -n vault -o jsonpath='{.data.init\.json}' | base64 --decode > $INIT_FILE
+#             export VAULT_TOKEN=$(jq -r '.root_token' $INIT_FILE)
+#             vault login $VAULT_TOKEN
+#             vault secrets enable -path=secret kv-v2
+#             vault policy write k8s-secret-policy - <<EOF
+#             path "secret/data/*" {
+#               capabilities = ["read", "list", "create", "update", "delete"]
+#             }
+#             EOF
+#             echo "Vault configured."
