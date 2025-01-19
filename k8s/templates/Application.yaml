@@ -76,8 +76,6 @@ kind: Application
 metadata:
   name: vault
   namespace: argo-cd
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
   source:
