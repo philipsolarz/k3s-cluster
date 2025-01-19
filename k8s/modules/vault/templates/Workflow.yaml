@@ -3,7 +3,10 @@
 # metadata:
 #   name: vault-setup
 #   namespace: vault
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "2"
 # spec:
+#   serviceAccountName: vault-auth
 #   entrypoint: main
 #   templates:
 #     - name: main
@@ -21,7 +24,10 @@
 
 #     - name: init
 #       container:
-#         image: solarzphilip/vault-kubectl-utility:0.1.0
+#         image: solarzphilip/vault-kubectl-utility:0.1.2
+#         env:
+#           - name: VAULT_ADDR
+#             value: "http://vault.vault.svc.cluster.local:8200"
 #         command: ["/bin/bash", "-c"]
 #         args:
 #           - |
@@ -31,7 +37,10 @@
 
 #     - name: unseal
 #       container:
-#         image: solarzphilip/vault-kubectl-utility:0.1.0
+#         image: solarzphilip/vault-kubectl-utility:0.1.2
+#         env:
+#           - name: VAULT_ADDR
+#             value: "http://vault.vault.svc.cluster.local:8200"
 #         command: ["/bin/bash", "-c"]
 #         args:
 #           - |
@@ -44,7 +53,10 @@
 
 #     - name: configure
 #       container:
-#         image: solarzphilip/vault-kubectl-utility:0.1.0
+#         image: solarzphilip/vault-kubectl-utility:0.1.2
+#         env:
+#           - name: VAULT_ADDR
+#             value: "http://vault.vault.svc.cluster.local:8200"
 #         command: ["/bin/bash", "-c"]
 #         args:
 #           - |
