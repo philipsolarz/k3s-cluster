@@ -1,0 +1,6 @@
+env:
+  HCLOUD_TOKEN:
+    valueFrom:
+      secretKeyRef:
+        name: hcloud
+        key: token

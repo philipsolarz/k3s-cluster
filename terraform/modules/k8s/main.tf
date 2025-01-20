@@ -168,6 +168,18 @@ terraform {
 
 # }
 
+resource "kubernetes_secret" "hcloud" {
+  metadata {
+    name      = "hcloud"
+    namespace = "kube-system"
+  }
+
+  data = {
+    token = var.hcloud_token
+  }
+
+}
+
 resource "helm_release" "argo-cd" {
   name             = "argo-cd"
   repository       = "https://argoproj.github.io/argo-helm"
@@ -183,3 +195,4 @@ resource "helm_release" "app_of_apps" {
 
   depends_on = [helm_release.argo-cd]
 }
+

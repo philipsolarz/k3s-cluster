@@ -50,20 +50,20 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-workflows
+  name: hcloud-cloud-controller-manager
   namespace: argo-cd
 spec:
   project: default
   source:
     repoURL: https://github.com/philipsolarz/k3s-cluster.git
     targetRevision: main
-    path: k8s/modules/argo-workflows
+    path: k8s/modules/hcloud-cloud-controller-manager
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: argo-workflows
+    namespace: kube-system
   syncPolicy:
     automated:
       prune: true
@@ -71,29 +71,53 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: vault
-  namespace: argo-cd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/philipsolarz/k3s-cluster.git
-    targetRevision: main
-    path: k8s/modules/vault
-    helm:
-      valueFiles:
-        - values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: vault
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: argo-workflows
+#   namespace: argo-cd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/philipsolarz/k3s-cluster.git
+#     targetRevision: main
+#     path: k8s/modules/argo-workflows
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: argo-workflows
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: vault
+#   namespace: argo-cd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/philipsolarz/k3s-cluster.git
+#     targetRevision: main
+#     path: k8s/modules/vault
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: vault
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
 # ---
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
