@@ -14,7 +14,7 @@ terraform {
 resource "kubernetes_secret" "hcloud" {
   metadata {
     name      = "hcloud"
-    namespace = "default"
+    namespace = "kube-system"
   }
 
   data = {
@@ -30,6 +30,8 @@ resource "helm_release" "argo-cd" {
   version          = "7.7.16"
   namespace        = "argo-cd"
   create_namespace = true
+
+  depends_on = [kubernetes_secret.hcloud]
 }
 
 resource "helm_release" "app_of_apps" {

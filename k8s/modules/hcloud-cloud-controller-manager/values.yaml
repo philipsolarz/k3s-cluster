@@ -5,4 +5,3 @@ hcloud-cloud-controller-manager:
         secretKeyRef:
           name: hcloud
           key: token
-          namespace: default
