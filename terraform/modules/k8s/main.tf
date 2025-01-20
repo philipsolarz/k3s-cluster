@@ -14,7 +14,7 @@ terraform {
 resource "kubernetes_secret" "hcloud" {
   metadata {
     name      = "hcloud"
-    namespace = "kube-system"
+    namespace = "default"
   }
 
   data = {
