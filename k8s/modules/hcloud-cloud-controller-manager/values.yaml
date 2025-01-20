@@ -1,6 +1,7 @@
-env:
-  HCLOUD_TOKEN:
-    valueFrom:
-      secretKeyRef:
-        name: hcloud
-        key: token
+hcloud-cloud-controller-manager:
+  env:
+    HCLOUD_TOKEN:
+      valueFrom:
+        secretKeyRef:
+          name: hcloud
+          key: token
